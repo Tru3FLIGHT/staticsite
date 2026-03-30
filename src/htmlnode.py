@@ -17,3 +17,5 @@ class HTMLNode():
             out += f"{element}=\"{self.props[element]}\" "
         return out
 
+    def __repr__(self) -> str:
+        return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})"
