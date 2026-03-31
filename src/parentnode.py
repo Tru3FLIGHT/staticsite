@@ -13,8 +13,6 @@ class ParentNode(HTMLNode):
             raise ValueError("children in ParentNode cannot be None")
         out = f"<{self.tag}{self.props_to_html()}>"
         for child in self.children:
-            if child.value is None:
-                raise ValueError(f"Error: {child} has no attribute Value")
             out += child.to_html()
         return out + f"</{self.tag}>"
 

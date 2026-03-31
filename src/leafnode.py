@@ -8,7 +8,7 @@ class LeafNode(HTMLNode):
         super().__init__(tag, value, None, props)
 
     def __repr__(self) -> str:
-        return f"LeafNode({self.tag, self.value, self.props})"
+        return f"LeafNode{self.tag, self.value, self.props}"
 
     def to_html(self) -> str:
         out = ""

@@ -16,4 +16,5 @@ class testleafnode(unittest.TestCase):
         self.assertEqual(node.to_html(), "<a href=\"https://www.google.com\">Click me!</a>")
 
     def test_repr(self):
-        print(LeafNode("p", "hello", {"dict":"with value"}))
+        node = LeafNode("a", "Click me!", {"href": "https://www.google.com"})
+        print(node)
