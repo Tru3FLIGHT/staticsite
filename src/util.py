@@ -2,6 +2,29 @@ import re
 from leafnode import LeafNode
 from textnode import TextNode, TextType
 
+def split_nodes(old_nodes:list[TextNode]) -> list[TextNode]:
+    out = []
+    for node in old_nodes:
+        if node.text_type != TextType.TEXT:
+            out.append(node)
+            continue
+        instances = extract_markdown_link(node.text)
+        if len(instances) == 0:
+            out.append(node)
+            continue
+        current_text = node.text
+        for i in range(0, len(instances)):
+            instance = instances[i]
+            segment = current_text.split(f"[{instance[0]}]({instance[1]})",1)
+            out.append(TextNode(segment[0], TextType.TEXT))
+            out.append(TextNode(instance[0], TextType.LINK, instance[1]))
+            if i == len(instances)-1 and segment[1] != "":
+                out.append(TextNode(segment[1], TextType.TEXT))
+                break
+        
+            current_text = segment[1]
+    return out
+
 
 def text_node_to_leaf(node: TextNode) -> LeafNode:
 
@@ -42,3 +65,10 @@ def split_nodes_delimiter(old_nodes:list[TextNode], delimiter: str, text_type: T
             else:
                 out.append(TextNode(texts[i], text_type))
     return out
+
+
+def extract_markdown_image(text:str) -> list[tuple]:
+    return re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
+
+def extract_markdown_link(text:str) -> list[tuple]:
+    return re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)

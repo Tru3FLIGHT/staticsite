@@ -1,11 +1,11 @@
 import unittest
 
 import htmlnode
-from util import split_nodes_delimiter, text_node_to_leaf
+from util import extract_markdown_image, extract_markdown_link, split_nodes_delimiter, text_node_to_leaf
 from textnode import TextNode, TextType
 
 class testUtil(unittest.TestCase):
-
+#==============================
     def test_text(self):
         node = TextNode("This is a text node", TextType.TEXT)
         htmlnode = text_node_to_leaf(node)
@@ -40,7 +40,7 @@ class testUtil(unittest.TestCase):
         htmlnode = text_node_to_leaf(node)
         self.assertEqual(htmlnode.props, {"src":"image.jpg", "alt":"alt text"})
 
-    
+#=========================================================================
 
 
 
@@ -100,3 +100,21 @@ class testUtil(unittest.TestCase):
             TextNode(" and ", TextType.TEXT),
             TextNode("code", TextType.CODE)
         ])
+
+
+
+    def test_find_image(self):
+        self.assertEqual(extract_markdown_image("This is text ![image1](url1) and also ![image2](url2)"),
+                         [
+                         ("image1", "url1"),
+                         ("image2", "url2")
+                         ])
+
+    def test_find_image_none(self):
+        self.assertEqual(extract_markdown_image("this text has no image"), [])
+
+    def test_find_link(self):
+        self.assertEqual(extract_markdown_link("this text has [link](url), and ![image](url)"),
+                         [
+                         ("link", "url")
+                         ])
