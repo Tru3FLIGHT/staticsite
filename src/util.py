@@ -1,27 +1,31 @@
 import re
+from enum import Enum
 from leafnode import LeafNode
 from textnode import TextNode, TextType
 
-def split_nodes(old_nodes:list[TextNode]) -> list[TextNode]:
+class Split(Enum):
+    LINK = "link"
+    IMAGE = "image" 
+
+def split_nodes(old_nodes:list[TextNode], a: Split) -> list[TextNode]:
     out = []
     for node in old_nodes:
         if node.text_type != TextType.TEXT:
             out.append(node)
             continue
-        instances = extract_markdown_link(node.text)
+        instances = extract_markdown_link(node.text) if a == Split.LINK else extract_markdown_image(node.text)
         if len(instances) == 0:
             out.append(node)
             continue
         current_text = node.text
         for i in range(0, len(instances)):
             instance = instances[i]
-            segment = current_text.split(f"[{instance[0]}]({instance[1]})",1)
+            segment = current_text.split(f"[{instance[0]}]({instance[1]})",1) if a == Split.LINK else current_text.split(f"![{instance[0]}]({instance[1]})")
             out.append(TextNode(segment[0], TextType.TEXT))
-            out.append(TextNode(instance[0], TextType.LINK, instance[1]))
+            out.append(TextNode(instance[0], TextType.LINK if a == Split.LINK else TextType.IMAGE, instance[1]))
             if i == len(instances)-1 and segment[1] != "":
                 out.append(TextNode(segment[1], TextType.TEXT))
                 break
-        
             current_text = segment[1]
     return out
 
