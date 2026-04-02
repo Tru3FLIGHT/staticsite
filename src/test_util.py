@@ -1,7 +1,7 @@
 import unittest
 
 import htmlnode
-from util import Split, extract_markdown_image, extract_markdown_link, split_nodes, split_nodes_delimiter, text_node_to_leaf
+from markdown_util import *
 from textnode import TextNode, TextType
 
 class testUtil(unittest.TestCase):
@@ -176,3 +176,46 @@ class testUtil(unittest.TestCase):
         ],
         new_new_nodes,
     )
+
+
+    def test_to_textnode(self):
+        out = text_to_TextNode("This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)")
+        self.assertEqual(out,
+                         [
+                            TextNode("This is ", TextType.TEXT),
+                            TextNode("text", TextType.BOLD),
+                            TextNode(" with an ", TextType.TEXT),
+                            TextNode("italic", TextType.ITALIC),
+                            TextNode(" word and a ", TextType.TEXT),
+                            TextNode("code block", TextType.CODE),
+                            TextNode(" and an ", TextType.TEXT),
+                            TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+                            TextNode(" and a ", TextType.TEXT),
+                            TextNode("link", TextType.LINK, "https://boot.dev"),
+                        ])
+
+
+    def test_markdown_to_blocks(self):
+        md = """
+This is **bolded** paragraph
+
+
+with a line inbetween
+\n
+This is another paragraph with _italic_ text and `code` here
+This is the same paragraph on a new line
+
+
+- This is a list
+- with items
+"""
+        blocks = markdown_to_block(md)
+        self.assertEqual(
+            blocks,
+            [
+                "This is **bolded** paragraph",
+                "with a line inbetween"
+                "This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
+                "- This is a list\n- with items",
+            ],
+        )

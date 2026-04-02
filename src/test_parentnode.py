@@ -6,7 +6,6 @@ from parentnode import ParentNode
 class testparentnode(unittest.TestCase):
 
 
-    #TODO: Finish testing and fix issues
     def test_to_html_with_children(self):
         child_node = LeafNode("span", "child")
         parent_node = ParentNode("div", [child_node])

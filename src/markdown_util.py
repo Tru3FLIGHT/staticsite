@@ -7,6 +7,25 @@ class Split(Enum):
     LINK = "link"
     IMAGE = "image" 
 
+def markdown_to_block(markdown: str) -> list[str]:
+    out = []
+    for block in markdown.split("\n\n"):
+        print(block)
+        if block != "\n" and block != "":
+            out.append(block.strip())
+        else:
+            print("Throwing block away")
+    return out
+
+def text_to_TextNode(text: str) -> list[TextNode]:
+    out = []
+    out = split_nodes([TextNode(text, TextType.TEXT)], Split.LINK)
+    out = split_nodes(out, Split.IMAGE)
+    out = split_nodes_delimiter(out, "**", TextType.BOLD)
+    out = split_nodes_delimiter(out, "_", TextType.ITALIC)
+    out = split_nodes_delimiter(out, "`", TextType.CODE)
+    return out
+
 def split_nodes(old_nodes:list[TextNode], a: Split) -> list[TextNode]:
     out = []
     for node in old_nodes:
