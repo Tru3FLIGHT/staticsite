@@ -201,7 +201,7 @@ This is **bolded** paragraph
 
 
 with a line inbetween
-\n
+
 This is another paragraph with _italic_ text and `code` here
 This is the same paragraph on a new line
 
