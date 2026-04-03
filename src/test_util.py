@@ -214,8 +214,54 @@ This is the same paragraph on a new line
             blocks,
             [
                 "This is **bolded** paragraph",
-                "with a line inbetween"
+                "with a line inbetween",
                 "This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
                 "- This is a list\n- with items",
             ],
         )
+
+    def test_mkd_to_block_edgec(self):
+        md = """
+this is a line\n\n
+
+with extra whitespace\n\n\n
+
+we are testing if these lines get properly
+removed
+"""
+        blocks = markdown_to_block(md)
+        self.assertEqual(
+            blocks,
+            [
+                "this is a line",
+                "with extra whitespace",
+                "we are testing if these lines get properly\nremoved"
+            ]
+        )
+
+
+    def test_blocktype_heading(self):
+        block = "### this block is a heading"
+        self.assertEqual(
+            block_to_block_type(block),
+            BlockType.HEADING
+        )
+
+    def test_blocktype_not_heading(self):
+        block = "#this is not a heading"
+        self.assertNotEqual(
+            block_to_block_type(block),
+            BlockType.HEADING
+        )
+
+    def test_blocktype_code(self):
+        md = """
+this is a line
+
+```python
+def func():
+    print(\"This is a codeblock\")
+```
+"""
+        blocks = markdown_to_block(md)
+        self.assertEqual(block_to_block_type(blocks[1]), BlockType.CODE)

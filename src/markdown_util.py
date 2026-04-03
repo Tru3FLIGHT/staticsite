@@ -7,15 +7,38 @@ class Split(Enum):
     LINK = "link"
     IMAGE = "image" 
 
+class BlockType(Enum):
+    PARAGRAPH = "paragraph"
+    HEADING = "heading"
+    CODE = "code"
+    QUOTE = "quote"
+    U_LIST = "unordered list"
+    O_LIST = "ordered list"
+
+RULES = [
+    (BlockType.CODE, re.compile(r"^```[\s\S]*?```$", re.MULTILINE)),
+    (BlockType.HEADING, re.compile(r"^\s{0,3}#{1,6}\s")),
+    (BlockType.O_LIST, re.compile(r"^\s*\d+\.\s")),
+    (BlockType.U_LIST, re.compile(r"^\s*[-*+]\s")),
+    (BlockType.QUOTE, re.compile(r"^\s*>\s")),
+]
+
+
+
 def markdown_to_block(markdown: str) -> list[str]:
     out = []
     for block in markdown.split("\n\n"):
-        print(block)
-        if block != "\n" and block != "":
-            out.append(block.strip())
-        else:
-            print("Throwing block away")
+        block = block.strip()
+        if block != "":
+            out.append(block)
     return out
+
+def block_to_block_type(block: str) -> BlockType:
+    for block_type, pattern in RULES:
+        if pattern.search(block):
+            return block_type
+    return BlockType.PARAGRAPH
+
 
 def text_to_TextNode(text: str) -> list[TextNode]:
     out = []
