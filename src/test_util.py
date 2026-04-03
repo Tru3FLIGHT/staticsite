@@ -1,7 +1,9 @@
 import unittest
-
-import htmlnode
-from markdown_util import *
+from extractors import *
+from enums import *
+from blocks import *
+from html_parse import *
+from inlines import *
 from textnode import TextNode, TextType
 
 class testUtil(unittest.TestCase):
