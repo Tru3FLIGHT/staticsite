@@ -4,7 +4,7 @@ import re
 
 RULES = [
     (BlockType.CODE, re.compile(r"^```[\s\S]*?```$", re.MULTILINE)),
-    (BlockType.HEADING, re.compile(r"^\s{0,3}#{1,6}\s")),
+    (BlockType.HEADING, re.compile(r"^#{1,6}\s")),
     (BlockType.O_LIST, re.compile(r"^\s*\d+\.\s")),
     (BlockType.U_LIST, re.compile(r"^\s*[-*+]\s")),
     (BlockType.QUOTE, re.compile(r"^\s*>\s")),
