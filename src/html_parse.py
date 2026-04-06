@@ -38,8 +38,24 @@ def markdown_to_html_node(markdown: str) -> HTMLNode:
         block_type = block_to_block_type(block)
         if block_type != BlockType.CODE:
             node = text_to_children(block.strip(), block_type)
+            div_children.append(node)
         else:
-            node = LeafNode("code",block.strip().strip("```").strip())
+            first_fence_start = block.find("```")
+            second_fence_start = block.find("```", first_fence_start + 3)
+
+            if first_fence_start != -1 and second_fence_start != -1 and first_fence_start != second_fence_start:
+                content_start = first_fence_start + 3
+                # If there's a newline immediately after the opening fence, skip it.
+                if content_start < len(block) and block[content_start] == '\n':
+                    content_start += 1
+
+                content_end = second_fence_start
+                code_content = block[content_start:content_end]
+                node = LeafNode("code", code_content)
+            else:
+                # Fallback for malformed blocks, though markdown_to_block should ideally prevent this.
+                # If fences are not found as expected, strip all '```' and then any remaining whitespace.
+                node = LeafNode("code", block.strip("```").strip())
             pre = ParentNode("pre", [node])
             div_children.append(pre)
     div = ParentNode("div", div_children)
@@ -51,6 +67,7 @@ def text_to_children(block:str, block_type:BlockType) -> ParentNode:
     match block_type:
         case BlockType.PARAGRAPH:
             tag = "p"
+            block = block.replace("\n", " ")
             nodes = text_to_TextNode(block)
             children.extend(text_nodes_to_leaf_nodes(nodes))
         case BlockType.O_LIST:
@@ -103,5 +120,3 @@ def list_to_html(block:str, block_type:BlockType)-> list[HTMLNode]:
         children = text_nodes_to_leaf_nodes(nodes)
         out.append(ParentNode("li",children))
     return out
-
-
