@@ -3,7 +3,6 @@ from extractors import extract_markdown_heading, extract_markdown_ordered_list
 from htmlnode import HTMLNode
 from inlines import text_to_TextNode
 from leafnode import LeafNode
-import parentnode
 from textnode import TextNode
 from parentnode import ParentNode
 from enums import TextType, BlockType
@@ -120,3 +119,5 @@ def list_to_html(block:str, block_type:BlockType)-> list[HTMLNode]:
         children = text_nodes_to_leaf_nodes(nodes)
         out.append(ParentNode("li",children))
     return out
+
+

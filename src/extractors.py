@@ -1,5 +1,6 @@
 import re
 
+
 def extract_markdown_image(text:str) -> list[tuple]:
     return re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
 

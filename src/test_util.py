@@ -4,6 +4,7 @@ from enums import *
 from blocks import *
 from html_parse import *
 from inlines import *
+from pagegen import *
 from textnode import TextNode, TextType
 
 class testUtil(unittest.TestCase):
@@ -183,9 +184,9 @@ class testUtil(unittest.TestCase):
 
     def test_to_textnode(self):
         out = text_to_TextNode("This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)")
-        # print(len(out))
-        # for e in out:
-        #     print(e)
+        print(len(out))
+        for e in out:
+            print(e)
         self.assertEqual(out,
                          [
                             TextNode("This is ", TextType.TEXT),
@@ -275,3 +276,14 @@ def func():
     def test_count_heading(self):
         md = "### This should have 3"
         self.assertEqual(extract_markdown_heading(md)[0].count("#"), 3)
+
+
+    def test_extract_heading(self):
+        md = """
+# test
+
+theres some more
+
+heres some poggers
+"""
+        self.assertEqual(extract_title(md), "test")
