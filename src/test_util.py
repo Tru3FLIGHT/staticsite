@@ -9,10 +9,11 @@ from textnode import TextNode, TextType
 class testUtil(unittest.TestCase):
 #==============================
     def test_text(self):
-        node = TextNode("This is a text node", TextType.TEXT)
+        node = TextNode("This is a text html node", TextType.TEXT)
         htmlnode = text_node_to_leaf(node)
+        print(htmlnode.to_html())
         self.assertEqual(htmlnode.tag, None)
-        self.assertEqual(htmlnode.value, "This is a text node")
+        self.assertEqual(htmlnode.value, "This is a text html node")
 
     def test_italics(self):
         node = TextNode("this is italic text", TextType.ITALIC)
@@ -182,6 +183,9 @@ class testUtil(unittest.TestCase):
 
     def test_to_textnode(self):
         out = text_to_TextNode("This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)")
+        print(len(out))
+        for e in out:
+            print(e)
         self.assertEqual(out,
                          [
                             TextNode("This is ", TextType.TEXT),
@@ -268,4 +272,6 @@ def func():
         blocks = markdown_to_block(md)
         self.assertEqual(block_to_block_type(blocks[1]), BlockType.CODE)
 
-
+    def test_count_heading(self):
+        md = "### This should have 3"
+        self.assertEqual(extract_markdown_heading(md)[0].count("#"), 3)
