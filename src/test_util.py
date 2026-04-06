@@ -11,7 +11,7 @@ class testUtil(unittest.TestCase):
     def test_text(self):
         node = TextNode("This is a text html node", TextType.TEXT)
         htmlnode = text_node_to_leaf(node)
-        print(htmlnode.to_html())
+        # print(htmlnode.to_html())
         self.assertEqual(htmlnode.tag, None)
         self.assertEqual(htmlnode.value, "This is a text html node")
 
@@ -183,9 +183,9 @@ class testUtil(unittest.TestCase):
 
     def test_to_textnode(self):
         out = text_to_TextNode("This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)")
-        print(len(out))
-        for e in out:
-            print(e)
+        # print(len(out))
+        # for e in out:
+        #     print(e)
         self.assertEqual(out,
                          [
                             TextNode("This is ", TextType.TEXT),
