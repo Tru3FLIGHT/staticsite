@@ -1,5 +1,12 @@
 from enum import Enum
 
+
+STATIC_PATH = "static/"
+PUBLIC_PATH = "docs/"
+CONTENT_PATH = "content/"
+TEMPLATE = "template.html"
+
+
 class Split(Enum):
     LINK = "link"
     IMAGE = "image" 
