@@ -81,6 +81,9 @@ def text_to_children(block:str, block_type:BlockType) -> ParentNode:
             nodes = text_to_TextNode(block)
             children.extend(text_nodes_to_leaf_nodes(nodes))
         case BlockType.QUOTE:
+            lines = block.split('\n')
+            stripped_lines = [line.lstrip('> ').strip() for line in lines]
+            block = '\n'.join(stripped_lines)
             tag = "blockquote"
             nodes = text_to_TextNode(block)
             children.extend(text_nodes_to_leaf_nodes(nodes))
