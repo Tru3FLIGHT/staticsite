@@ -34,7 +34,7 @@ def gen_content(content_dir:str, template:str, destination:str, basepath = "/"):
     for file in os.listdir(content_dir):
         fullpath = content_dir + file
         if os.path.isdir(fullpath):
-            gen_content(content_dir+file+"/",template, destination+file+"/")
+            gen_content(content_dir+file+"/",template, destination+file+"/", basepath=basepath)
         if os.path.isfile(fullpath):
             name = file.replace(".md", "")
             generate_page(fullpath, template, destination+f"{name}.html", basepath=basepath)
