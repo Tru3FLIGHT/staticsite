@@ -23,6 +23,7 @@ This file defines various enumerations and constants used throughout the project
 -   `BlockType(Enum)`: An enumeration for different types of markdown blocks (e.g., `PARAGRAPH`, `HEADING`, `CODE`, `QUOTE`, `U_LIST`, `O_LIST`).
 -   `TextType(Enum)`: An enumeration for different types of text formatting (e.g., `TEXT`, `ITALIC`, `BOLD`, `CODE`, `LINK`, `IMAGE`).
 
+
 ## src/html_parse.py
 
 -   `text_node_to_leaf(node: TextNode) -> LeafNode`
@@ -38,6 +39,7 @@ This file defines various enumerations and constants used throughout the project
 -   `list_to_html(block:str, block_type:BlockType)-> list[HTMLNode]`
     Converts a markdown list block (ordered or unordered) into a list of `HTMLNode` objects, typically `<li>` elements wrapped in `<ol>` or `<ul>`.
 
+
 ## src/blocks.py
 
 -   `markdown_to_block(markdown: str) -> list[str]`
@@ -45,12 +47,14 @@ This file defines various enumerations and constants used throughout the project
 -   `block_to_block_type(block: str) -> BlockType`
     Analyzes a given markdown block and returns its corresponding `BlockType` (e.g., paragraph, heading, code, quote, list).
 
+
 ## src/parentnode.py
 
 -   `ParentNode(tag, children:list, props=None)`
     Initializes a `ParentNode` object, which can contain other `HTMLNode` children.
 -   `to_html(self)`
     Renders the `ParentNode` and all its children into a complete HTML string.
+
 
 ## src/leafnode.py
 
@@ -61,15 +65,18 @@ This file defines various enumerations and constants used throughout the project
 -   `to_html(self) -> str`
     Renders the `LeafNode` into its corresponding HTML string representation.
 
+
 ## src/main.py
 
 -   `main() -> None`
     The main entry point of the static site generator. It orchestrates the copying of static files and the generation of content pages.
 
+
 ## src/sitegen.py
 
 -   `copy_static(source: str, destination: str, dest_clear:bool=False)`
     Recursively copies files and subdirectories from a source path to a destination path. It can optionally clear the destination directory before copying.
+
 
 ## src/extractors.py
 
@@ -82,6 +89,7 @@ This file defines various enumerations and constants used throughout the project
 -   `extract_markdown_ordered_list(text:str) -> list`
     Extracts markdown ordered list markers (e.g., `1. `, `2. `) from a given text, considering multiple lines.
 
+
 ## src/inlines.py
 
 -   `text_to_TextNode(text: str) -> list[TextNode]`
@@ -90,6 +98,7 @@ This file defines various enumerations and constants used throughout the project
     Splits a list of `TextNode` objects based on whether they contain markdown links or images, creating new `TextNode` objects for the split parts.
 -   `split_nodes_delimiter(old_nodes:list[TextNode], delimiter: str, text_type: TextType) -> list[TextNode]`
     Splits `TextNode` objects based on a specified delimiter (e.g., `**`, `_`, `` ` ``) and assigns a new `TextType` to the delimited content.
+
 
 ## src/pagegen.py
 
