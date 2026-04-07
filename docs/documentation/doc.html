@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Project Documentation</title>
+    <link href="/staticsite/index.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <article><div><h1>Project Documentation</h1><p>This document provides an overview of the functions within the <code>src</code> directory of the project.</p><h2>src/textnode.py</h2><ul><li><code>TextNode(text: str, text_type: TextType, url=None)</code>
+    Initializes a TextNode object with given text, text type, and an optional URL.</li><li><code>__eq__(self, value: object, /) -> bool</code>
+    Compares two <code>TextNode</code> objects for equality based on their text, text type, and URL.</li><li><code>__repr__(self) -> str</code>
+    Returns a string representation of the <code>TextNode</code> object for debugging.</li></ul><h2>src/enums.py</h2><p>This file defines various enumerations and constants used throughout the project.</p><ul><li><code>STATIC_PATH</code>: Constant for the static files directory.</li><li><code>PUBLIC_PATH</code>: Constant for the public output directory.</li><li><code>CONTENT_PATH</code>: Constant for the markdown content directory.</li><li><code>TEMPLATE</code>: Constant for the HTML template file name.</li><li><code>Split(Enum)</code>: An enumeration for different splitting mechanisms (e.g., <code>LINK</code>, <code>IMAGE</code>).</li><li><code>BlockType(Enum)</code>: An enumeration for different types of markdown blocks (e.g., <code>PARAGRAPH</code>, <code>HEADING</code>, <code>CODE</code>, <code>QUOTE</code>, <code>U_LIST</code>, <code>O_LIST</code>).</li><li><code>TextType(Enum)</code>: An enumeration for different types of text formatting (e.g., <code>TEXT</code>, <code>ITALIC</code>, <code>BOLD</code>, <code>CODE</code>, <code>LINK</code>, <code>IMAGE</code>).</li></ul><h2>src/html_parse.py</h2><ul><li><code>text_node_to_leaf(node: TextNode) -> LeafNode</code>
+    Converts a <code>TextNode</code> object into a <code>LeafNode</code> object, mapping <code>TextType</code> to appropriate HTML tags.</li><li><code>markdown_to_html_node(markdown: str) -> HTMLNode</code>
+    Parses a markdown string and converts it into a hierarchical <code>HTMLNode</code> structure, representing the HTML content.</li><li><code>text_to_children(block:str, block_type:BlockType) -> ParentNode</code>
+    Converts a raw text block and its determined <code>BlockType</code> into a <code>ParentNode</code> containing corresponding <code>LeafNode</code> children.</li><li><code>text_nodes_to_leaf_nodes(nodes:list[TextNode]) -> list[LeafNode]</code>
+    Iterates through a list of <code>TextNode</code> objects and converts each one into a <code>LeafNode</code>.</li><li><code>heading_count(block:str)</code>
+    Determines the heading level (h1 to h6) of a markdown heading block by counting the '#' characters.</li><li><code>list_to_html(block:str, block_type:BlockType)-> list[HTMLNode]</code>
+    Converts a markdown list block (ordered or unordered) into a list of <code>HTMLNode</code> objects, typically <code><li></code> elements wrapped in <code><ol></code> or <code><ul></code>.</li></ul><h2>src/blocks.py</h2><ul><li><code>markdown_to_block(markdown: str) -> list[str]</code>
+    Splits a raw markdown string into a list of distinct markdown blocks, typically separated by double newlines.</li><li><code>block_to_block_type(block: str) -> BlockType</code>
+    Analyzes a given markdown block and returns its corresponding <code>BlockType</code> (e.g., paragraph, heading, code, quote, list).</li></ul><h2>src/parentnode.py</h2><ul><li><code>ParentNode(tag, children:list, props=None)</code>
+    Initializes a <code>ParentNode</code> object, which can contain other <code>HTMLNode</code> children.</li><li><code>to_html(self)</code>
+    Renders the <code>ParentNode</code> and all its children into a complete HTML string.</li></ul><h2>src/leafnode.py</h2><ul><li><code>LeafNode(tag, value, props=None)</code>
+    Initializes a <code>LeafNode</code> object, representing a single HTML element with content but no children.</li><li><code>__repr__(self) -> str</code>
+    Returns a string representation of the <code>LeafNode</code> object for debugging.</li><li><code>to_html(self) -> str</code>
+    Renders the <code>LeafNode</code> into its corresponding HTML string representation.</li></ul><h2>src/main.py</h2><ul><li><code>main() -> None</code>
+    The main entry point of the static site generator. It orchestrates the copying of static files and the generation of content pages.</li></ul><h2>src/sitegen.py</h2><ul><li><code>copy_static(source: str, destination: str, dest_clear:bool=False)</code>
+    Recursively copies files and subdirectories from a source path to a destination path. It can optionally clear the destination directory before copying.</li></ul><h2>src/extractors.py</h2><ul><li>`extract<i>markdown</i>image(text:str) -> list[tuple]`
+    Extracts all markdown image syntax (e.g., `<img src="url" alt="alt text"></img>`) from a given text, returning a list of tuples containing (alt text, url).</li><li>`extract<i>markdown</i>link(text:str) -> list[tuple]`
+    Extracts all markdown link syntax (e.g., `<a href="url">link text</a>`) from a given text, excluding images, returning a list of tuples containing (link text, url).</li><li><code>extract_markdown_heading(text:str) -> list</code>
+    Extracts markdown heading markers (e.g., <code>#</code>, <code>##</code>) from the beginning of a text string.</li><li><code>extract_markdown_ordered_list(text:str) -> list</code>
+    Extracts markdown ordered list markers (e.g., <code>1. </code>, <code>2. </code>) from a given text, considering multiple lines.</li></ul><h2>src/inlines.py</h2><ul><li><code>text_to_TextNode(text: str) -> list[TextNode]</code>
+    Converts a raw text string into a list of <code>TextNode</code> objects by processing inline markdown for links, images, bold, italic, and code.</li><li><code>split_nodes(old_nodes:list[TextNode], a: Split) -> list[TextNode]</code>
+    Splits a list of <code>TextNode</code> objects based on whether they contain markdown links or images, creating new <code>TextNode</code> objects for the split parts.</li><li>`split_nodes_delimiter(old_nodes:list[TextNode], delimiter: str, text_type: TextType) -> list[TextNode]`
+    Splits `TextNode` objects based on a specified delimiter (e.g., `**`, `_`, `` ` ``) and assigns a new `TextType` to the delimited content.</li></ul><h2>src/pagegen.py</h2><ul><li><code>extract_title(markdown:str) -> str</code>
+    Extracts the main H1 title from a markdown string. Throws an exception if no H1 title is found.</li><li><code>generate_page(source:str, template:str, destination:str, basepath = "/")</code>
+    Generates a single HTML page from a markdown source file and an HTML template, writing the output to the specified destination. It also handles basepath replacements for links and images.</li><li><code>gen_content(content_dir:str, template:str, destination:str, basepath = "/")</code>
+    Recursively processes a content directory, generating HTML pages from all markdown files found within it and its subdirectories.</li></ul></div></article>
+  </body>
+</html>

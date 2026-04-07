@@ -6,9 +6,9 @@ def text_to_TextNode(text: str) -> list[TextNode]:
     out = []
     out = split_nodes([TextNode(text, TextType.TEXT)], Split.LINK)
     out = split_nodes(out, Split.IMAGE)
+    out = split_nodes_delimiter(out, "`", TextType.CODE)
     out = split_nodes_delimiter(out, "**", TextType.BOLD)
     out = split_nodes_delimiter(out, "_", TextType.ITALIC)
-    out = split_nodes_delimiter(out, "`", TextType.CODE)
     return out
 
 def split_nodes(old_nodes:list[TextNode], a: Split) -> list[TextNode]:
@@ -41,7 +41,8 @@ def split_nodes_delimiter(old_nodes:list[TextNode], delimiter: str, text_type: T
             continue
         texts = node.text.split(delimiter)
         if len(texts) % 2 != 1:
-            raise ValueError(f"Invalid markdown syntax: {node.text}")
+            out.append(node)
+            continue
         for i in range(0, len(texts)):
             if i % 2 == 0:
                 if texts[i] != "":
